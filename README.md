@@ -51,21 +51,21 @@ pip install -r requirements.txt
 First move all the CLEF images to `data/images` and the csv with clef annotations in `data/annotations.csv`. Then create masks with
 
 ```bash
-python coral_reef/data/create_masks.py
+python coralml/data/create_masks.py
 ``` 
 
 And subsequently split into train and validation
 
 ```bash
-python coral_reef/data/data_split.py
+python coralml/data/data_split.py
 ```
 
 This will generate `data_train.json` and `data_valid.json` which will be used to train.
 
 	
 	~~~~
-	conda create --name coral_reef python==3.6.7
-	source activate coral_reef
+	conda create --name coralml python==3.6.7
+	source activate coralml
 	~~~~
 	
 ## install pytorch

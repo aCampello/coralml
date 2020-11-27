@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import StrMethodFormatter
 
-from coral_reef.constants import paths
+from coralml.constants import paths
 
 
 def display_class_distribution(stats_file_paths, include_background=True, subtitles=None, title=None,

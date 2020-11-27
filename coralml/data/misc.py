@@ -8,7 +8,7 @@ import numpy as np
 from scipy import ndimage
 from tqdm import tqdm
 import matplotlib.pyplot as plt
-from coral_reef.constants import paths, mapping
+from coralml.constants import paths, mapping
 
 
 

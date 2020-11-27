@@ -10,12 +10,12 @@ from scipy.ndimage import zoom
 import cv2
 import matplotlib.pyplot as plt
 
-from coral_reef.ml.data_set import Normalize, Resize, ToTensor
-from coral_reef.constants import paths
-from coral_reef.constants import strings as STR
+from coralml.ml.data_set import Normalize, Resize, ToTensor
+from coralml.constants import paths
+from coralml.constants import strings as STR
 
-from coral_reef.ml.utils import load_state_dict, cut_windows, softmax
-from coral_reef.utils.print_utils import Printer
+from coralml.ml.utils import load_state_dict, cut_windows, softmax
+from coralml.utils.print_utils import Printer
 
 sys.path.extend([paths.DEEPLAB_FOLDER_PATH, os.path.join(paths.DEEPLAB_FOLDER_PATH, "utils")])
 from modeling.deeplab import DeepLab

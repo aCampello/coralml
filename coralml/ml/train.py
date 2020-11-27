@@ -14,13 +14,13 @@ from tensorboardX import SummaryWriter
 import numpy as np
 from tqdm import tqdm
 
-from coral_reef.constants import paths, mapping
-from coral_reef.constants import strings as STR
+from coralml.constants import paths, mapping
+from coralml.constants import strings as STR
 
-from coral_reef.visualisation import visualisation
+from coralml.visualisation import visualisation
 
-from coral_reef.ml.data_set import DictArrayDataSet, RandomCrop, Resize, custom_collate, ToTensor, Flip, Normalize
-from coral_reef.ml.utils import load_state_dict, Saver, calculate_class_weights
+from coralml.ml.data_set import DictArrayDataSet, RandomCrop, Resize, custom_collate, ToTensor, Flip, Normalize
+from coralml.ml.utils import load_state_dict, Saver, calculate_class_weights
 
 
 sys.path.extend([paths.DEEPLAB_FOLDER_PATH, os.path.join(paths.DEEPLAB_FOLDER_PATH, "utils")])

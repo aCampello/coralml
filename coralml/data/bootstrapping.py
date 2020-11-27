@@ -7,9 +7,9 @@ import uuid
 import cv2
 import numpy as np
 
-from coral_reef.constants import strings as STR
-from coral_reef.constants import paths
-from coral_reef.ml.utils import cut_windows, calc_IOU
+from coralml.constants import strings as STR
+from coralml.constants import paths
+from coralml.ml.utils import cut_windows, calc_IOU
 
 import matplotlib.pyplot as plt
 

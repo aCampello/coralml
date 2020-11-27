@@ -11,8 +11,8 @@ from tqdm import tqdm
 from random import shuffle
 from scipy import spatial
 import matplotlib.pyplot as plt
-from coral_reef.constants import paths
-from coral_reef.constants import mapping
+from coralml.constants import paths
+from coralml.constants import mapping
 
 
 def _calc_mask_stats(mask_folder_path, colour_mapping):
@@ -174,7 +174,9 @@ def calculate_split(mask_folder_path, colour_mapping, training_size=0.85):
 
 
 if __name__ == "__main__":
-    mask_folder_path = "/home/aljo/filament/coral_reef/data/masks"
+    mask_folder_path = paths.MASK_FOLDER_PATH
+
+    print(paths.DATA_FOLDER_PATH)
 
     colour_mapping = mapping.get_colour_mapping()
 

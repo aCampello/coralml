@@ -6,9 +6,9 @@ import torch
 from tqdm import tqdm
 import numpy as np
 
-from coral_reef.constants import paths
-from coral_reef.ml import predict
-from coral_reef.ml.utils import colour_mask_to_class_id_mask, cut_windows
+from coralml.constants import paths
+from coralml.ml import predict
+from coralml.ml.utils import colour_mask_to_class_id_mask, cut_windows
 
 sys.path.extend([paths.DEEPLAB_FOLDER_PATH, os.path.join(paths.DEEPLAB_FOLDER_PATH, "utils")])
 

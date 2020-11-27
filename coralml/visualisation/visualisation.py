@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from mpl_toolkits.axes_grid1 import AxesGrid
 
-from coral_reef.ml import utils as ml_utils
+from coralml.ml import utils as ml_utils
 
 
 def plot_data(image, gt_mask, colour_mapping, prediction_mask=None, out_file_path=None):

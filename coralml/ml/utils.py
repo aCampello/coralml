@@ -5,7 +5,7 @@ import json
 
 import numpy as np
 import torch
-from coral_reef.constants import mapping
+from coralml.constants import mapping
 
 from tensorboardX import SummaryWriter
 

@@ -8,8 +8,8 @@ from scipy.ndimage import zoom
 import torch
 from torch.utils.data import Dataset
 
-from coral_reef.constants import strings as STR
-from coral_reef.ml import utils as ml_utils
+from coralml.constants import strings as STR
+from coralml.ml import utils as ml_utils
 
 
 def load_image(filepath):

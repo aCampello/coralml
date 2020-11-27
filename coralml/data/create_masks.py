@@ -1,10 +1,10 @@
-import os
-import cv2
 import json
-import numpy as np
-from pprint import pprint
+import os
 
-from coral_reef.constants import paths
+import cv2
+import numpy as np
+
+from coralml.constants import paths
 
 
 def parse_csv_data_file(csv_file_path):
@@ -46,7 +46,7 @@ def create_annotation_masks():
     """
 
     # parse the annotations file to get the data
-    csv_file_path = os.path.join(paths.DATA_FOLDER_PATH, "annotations.csv")
+    csv_file_path = os.path.join(paths.DATA_FOLDER_PATH, "annotations_train_task_2_corrected.csv")
     data = parse_csv_data_file(csv_file_path)
 
     # create a list containing all classes
@@ -60,9 +60,9 @@ def create_annotation_masks():
     colour_mapping = {"background": 0}
     colour_mapping.update({c: colours[class_mapping[c]] for c in classes})
 
-    for i, image_name in enumerate(data.keys()):
-        print("processing image {} of {}".format(i + 1, len(data.keys())))
+    print("Creating masks")
 
+    for i, image_name in enumerate(data.keys()):
         # create mask based on the size of the corresponding image
         image_path = os.path.join(paths.IMAGE_FOLDER_PATH, image_name)
         image_height, image_width = cv2.imread(image_path).shape[:2]
@@ -78,6 +78,7 @@ def create_annotation_masks():
         # save the mask
         name, _ = os.path.splitext(image_name)
         out_name = name + "_mask.png"
+        print(f"Saving {os.path.join(paths.MASK_FOLDER_PATH, out_name)}")
         cv2.imwrite(os.path.join(paths.MASK_FOLDER_PATH, out_name), mask)
 
     # write color mapping to file

@@ -6,9 +6,9 @@ import cv2
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 
-from coral_reef.constants import mapping, paths
-from coral_reef.ml.utils import class_id_mask_to_colour_mask
-from coral_reef.visualisation import visualisation
+from coralml.constants import mapping, paths
+from coralml.ml.utils import class_id_mask_to_colour_mask
+from coralml.visualisation import visualisation
 
 
 def _get_contour(mask):

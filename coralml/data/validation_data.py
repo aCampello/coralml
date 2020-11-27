@@ -7,9 +7,9 @@ import cv2
 from tqdm import tqdm
 import numpy as np
 
-from coral_reef.ml.utils import cut_windows
-from coral_reef.constants import paths
-from coral_reef.constants import strings as STR
+from coralml.ml.utils import cut_windows
+from coralml.constants import paths
+from coralml.constants import strings as STR
 
 
 def create_validation_data(image_files, mask_files, output_folder_name, window_sizes=None, step_sizes=None):

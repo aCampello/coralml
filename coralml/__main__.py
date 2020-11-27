@@ -1,9 +1,9 @@
 import json
 import os
 
-from coral_reef.constants import paths
-from coral_reef.ml.train import train
-import coral_reef.constants.strings as STR
+from coralml.constants import paths
+from coralml.ml.train import train
+import coralml.constants.strings as STR
 
 if __name__ == "__main__":
     # train(data_train, data_valid, image_base_dir, instructions)

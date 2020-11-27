@@ -1,7 +1,7 @@
 import json
 import os
 
-from coral_reef.constants.paths import DATA_FOLDER_PATH
+from coralml.constants.paths import DATA_FOLDER_PATH
 
 
 def get_colour_mapping():

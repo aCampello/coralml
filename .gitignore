@@ -1,6 +1,8 @@
 **/src/
 **/models/
 
+*egg-info/
+
 # images
 *.jpg
 *.jpeg

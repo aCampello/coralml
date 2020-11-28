@@ -150,7 +150,6 @@ class Resize:
     def __call__(self, sample):
         nn_input = sample[STR.NN_INPUT]
         nn_target = sample.get(STR.NN_TARGET, None)
-
         created_list = False
         if not isinstance(nn_input, list):
             nn_input = [nn_input]
@@ -166,7 +165,8 @@ class Resize:
             image = nn_input[i]
             factor = self.size / image.shape[0]
 
-            scaled_image = zoom(image, [factor, factor, 1], order=1)
+            scaled_image = zoom(image, [factor, factor, 1], order=1) # This has a bug!
+
             out_image[i, :scaled_image.shape[0], :scaled_image.shape[1]] = scaled_image
 
             if nn_target is not None:

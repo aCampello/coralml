@@ -93,12 +93,14 @@ class Trainer:
 
         print("{}applying random cropping".format("" if apply_random_cropping else "_NOT_ "))
 
+        crop = RandomCrop(
+            min_size=instructions.get(STR.CROP_SIZE_MIN, 400),
+            max_size=instructions.get(STR.CROP_SIZE_MAX, 1000),
+            crop_count=crops_per_image)
+
         t = [Normalize()]
         if apply_random_cropping:
-            t.append(RandomCrop(
-                min_size=instructions.get(STR.CROP_SIZE_MIN, 400),
-                max_size=instructions.get(STR.CROP_SIZE_MAX, 1000),
-                crop_count=crops_per_image))
+            t.append(crop)
         t += [Resize(nn_input_size),
               Flip(p_vertical=0.2, p_horizontal=0.5),
               ToTensor()]
@@ -106,14 +108,13 @@ class Trainer:
         transformations_train = transforms.Compose(t)
 
         # define transformers for validation
-        transformations_valid = transforms.Compose([Normalize(), Resize(nn_input_size), ToTensor()])
+        transformations_valid = transforms.Compose([Normalize(), crop, Resize(nn_input_size), ToTensor()])
 
         # set up data loaders
         dataset_train = DictArrayDataSet(image_base_dir=image_base_dir,
                                          data=data_train,
                                          num_classes=len(self.colour_mapping.keys()),
                                          transformation=transformations_train)
-
         # define batch sizes
         self.batch_size = instructions[STR.BATCH_SIZE]
 
@@ -209,6 +210,7 @@ class Trainer:
 
         # create a progress bar
         pbar = tqdm(self.data_loader_train)
+
         num_batches_train = len(self.data_loader_train)
 
         # go through each item in the training data

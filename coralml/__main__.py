@@ -36,7 +36,12 @@ if __name__ == "__main__":
         else:
             print(key)
 
-    instructions = {}  # To be replaced with real instruction file
+    with open(os.path.join(paths.DATA_FOLDER_PATH, "instructions.json"), "r") as fp:
+        instructions = json.load(fp)  # To be replaced
+
+    print("Training with instructions")
+    print(json.dumps(instructions, indent=4))
+    # with real instruction file
     image_base_dir = "data"
 
     with open(os.path.join(paths.DATA_FOLDER_PATH, "data_train.json"), "r") as fp:

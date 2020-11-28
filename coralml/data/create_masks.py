@@ -46,7 +46,7 @@ def create_annotation_masks():
     """
 
     # parse the annotations file to get the data
-    csv_file_path = os.path.join(paths.DATA_FOLDER_PATH, "annotations_train_task_2_corrected.csv")
+    csv_file_path = os.path.join(paths.DATA_FOLDER_PATH, "annotations_test.csv")
     data = parse_csv_data_file(csv_file_path)
 
     # create a list containing all classes

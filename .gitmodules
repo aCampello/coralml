@@ -1,0 +1,9 @@
+[submodule "docker/imageclef-2019-code"]
+	path = docker/imageclef-2019-code
+	url = https://github.com/FilamentAI/imageclef-2019-code.git
+[submodule "docker/pytorch-deeplab-xception"]
+	path = docker/pytorch-deeplab-xception
+	url = https://github.com/jfzhang95/pytorch-deeplab-xception.git
+[submodule "docker/conda.local"]
+	path = docker/conda.local
+	url = https://github.com/JBlaschke/conda.local.git

@@ -17,7 +17,7 @@ unzip -j -P <password> imageCLEFcoral2020_training_v4.zip -d data/images
 
 ## Clef2019 code
 
-### Installation:
+### Installation (pytorch):
 
 Clone this repository and `cd imageclef-2019-code`
 
@@ -45,6 +45,19 @@ Install requirements and package
 ```bash
 pip install -r requirements.txt
 pip install -e .
+```
+
+### Installation (tensorflow)
+
+In addition, the tensorflow installation requires protobuf and:
+
+```bash
+pip install -U --pre tensorflow=="2.2.0"
+git clone https://github.com/tensorflow/models.git
+cd models/research
+protoc object_detection/protos/*.proto --python_out=.
+cp object_detection/packages/tf2/setup.py .
+python -m pip install --use-feature=2020-resolver .
 ```
 
 ### Usage

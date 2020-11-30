@@ -15,7 +15,7 @@ from coralml.data.create_masks import parse_csv_data_file
 
 
 flags = tf.app.flags
-flags.DEFINE_string('output_path', 'data/coral_train-000000', 'Path to output TFRecord')
+flags.DEFINE_string('output_path', 'data/coral_train-00000', 'Path to output TFRecord')
 flags.DEFINE_string('annotations_path', 'data/annotations_test.csv',
                     'Path to coral reef annotations file')
 FLAGS = flags.FLAGS
@@ -39,12 +39,12 @@ class_map = {
 
 
 def create_label_map_file():
-    with open('coral_map.pbtxt', 'w') as f:
+    with open('data/coral_map.pbtxt', 'w') as f:
         for name, idx in class_map.items():
-            json_string = json.dumps({"id": idx, "name": name}, indent=2)
-            f.write("item ")
-            f.write(json_string)
-            f.write("\n\n")
+            f.write("item {\n")
+            f.write(f"  id: {idx}\n")
+            f.write(f"  name: '{name}'")
+            f.write("\n}\n\n")
 
 
 def create_tf_example(filename, annotation_list):

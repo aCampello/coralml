@@ -61,14 +61,14 @@ And subsequently split into train and validation
 python coralml/data/data_split.py
 ```
 
-Modify the file `data/instruction.json` to change hyperparameters of the network and train with:
+Modify the file `data/instructions.json` to change hyperparameters of the network and train with:
 
 ```bash
-python -m coralml
+python -m coralml --instructions data/instructions.json
 ```
 
-This will generate `data_train.json` and `data_valid.json` which will be used to train.
 
+### (To be deprecated): old conda instructions
 	
 	~~~~
 	conda create --name coralml python==3.6.7

@@ -52,12 +52,18 @@ pip install -e .
 In addition, the tensorflow installation requires protobuf and:
 
 ```bash
-pip install -U --pre tensorflow=="2.2.0"
+pip install tensorflow=="1.15.0"
 git clone https://github.com/tensorflow/models.git
 cd models/research
 protoc object_detection/protos/*.proto --python_out=.
-cp object_detection/packages/tf2/setup.py .
+cp object_detection/packages/tf1/setup.py .
 python -m pip install --use-feature=2020-resolver .
+```
+
+To train on tensorflow (not working yet):
+
+```bash
+python src/models/research/object_detection/model_main.py --model_dir model_dir --pipeline_config_path data/mask_rcnn_resnet50_coral.config
 ```
 
 ### Usage

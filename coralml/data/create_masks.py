@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 
@@ -38,15 +39,24 @@ def parse_csv_data_file(csv_file_path):
     return data
 
 
-def create_annotation_masks():
+def create_annotation_masks(data_folder_path):
     """
     Create mask images acting as annotations from the annotations data file. Mask files will be stored in the
     path.MASK_FOLDER_PATH folder
+
     :return: Nothing
     """
 
     # parse the annotations file to get the data
-    csv_file_path = os.path.join(paths.DATA_FOLDER_PATH, "annotations_test.csv")
+    data_folder_path = (data_folder_path if data_folder_path else paths.DATA_FOLDER_PATH)
+    image_folder_path = os.path.join(data_folder_path, "images")
+    mask_folder_path = os.path.join(data_folder_path, "masks")
+
+    os.makedirs(data_folder_path, exist_ok=True)
+    os.makedirs(image_folder_path, exist_ok=True)
+    os.makedirs(mask_folder_path, exist_ok=True)
+
+    csv_file_path = os.path.join(data_folder_path, "annotations_test.csv")
     data = parse_csv_data_file(csv_file_path)
 
     # create a list containing all classes
@@ -64,7 +74,7 @@ def create_annotation_masks():
 
     for i, image_name in enumerate(data.keys()):
         # create mask based on the size of the corresponding image
-        image_path = os.path.join(paths.IMAGE_FOLDER_PATH, image_name)
+        image_path = os.path.join(image_folder_path, image_name)
         image_height, image_width = cv2.imread(image_path).shape[:2]
         mask = np.zeros((image_height, image_width), dtype=np.uint8)
 
@@ -78,11 +88,11 @@ def create_annotation_masks():
         # save the mask
         name, _ = os.path.splitext(image_name)
         out_name = name + "_mask.png"
-        print(f"Saving {os.path.join(paths.MASK_FOLDER_PATH, out_name)}")
-        cv2.imwrite(os.path.join(paths.MASK_FOLDER_PATH, out_name), mask)
+        print(f"Saving {os.path.join(mask_folder_path, out_name)}")
+        cv2.imwrite(os.path.join(mask_folder_path, out_name), mask)
 
     # write color mapping to file
-    with open(os.path.join(paths.DATA_FOLDER_PATH, "colour_mapping.json"), "w") as fp:
+    with open(os.path.join(data_folder_path, "colour_mapping.json"), "w") as fp:
         json.dump(colour_mapping, fp, indent=4)
 
 
@@ -109,17 +119,8 @@ def correct_masks():
 
 
 if __name__ == "__main__":
-    create_annotation_masks()
-
-# def create_data_files():
-#
-#     data = []
-#     for image_file in image_files:
-#         _, image_name = os.path.split(image_file)
-#         image_base_name, _ = os.path.splitext(image_name)
-#         mask_name = image_base_name + "_mask.png"
-#         data.append({
-#             "image_name": "images/" + image_name,
-#             "mask_name": "masks/" + mask_name
-#         })
-#
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--data_folder_path', default=None, type=str,
+                        help='Path to the data directory, where to save the outputs.')
+    data_folder_path = parser.parse_args().data_folder_path
+    create_annotation_masks(data_folder_path=data_folder_path)

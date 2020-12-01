@@ -1,3 +1,4 @@
+import argparse
 import os
 import glob
 import json
@@ -22,7 +23,7 @@ def _calc_mask_stats(mask_folder_path, colour_mapping):
     :return: dict {<mask_name>: {}} containing class distributions for each image
     """
 
-    print("Calculating mask stats")
+    print(f"Calculating mask stats from masks in {mask_folder_path}")
     mask_stats = {}
     mask_paths = glob.glob(os.path.join(mask_folder_path, "*.png"))
 
@@ -174,9 +175,13 @@ def calculate_split(mask_folder_path, colour_mapping, training_size=0.85):
 
 
 if __name__ == "__main__":
-    mask_folder_path = paths.MASK_FOLDER_PATH
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--data_folder_path', default=None, type=str,
+                        help='Path to the data directory, where to save the outputs.')
+    data_folder_path = parser.parse_args().data_folder_path
 
-    print(paths.DATA_FOLDER_PATH)
+    data_folder_path = (data_folder_path if data_folder_path else paths.DATA_FOLDER_PATH)
+    mask_folder_path = os.path.join(data_folder_path, 'masks')
 
     colour_mapping = mapping.get_colour_mapping()
 
@@ -192,11 +197,11 @@ if __name__ == "__main__":
 
     data = data_train + data_val
 
-    with open(os.path.join(paths.DATA_FOLDER_PATH, "data.json"), "w") as fp:
+    with open(os.path.join(data_folder_path, "data.json"), "w") as fp:
         json.dump(data, fp, indent=4)
 
-    with open(os.path.join(paths.DATA_FOLDER_PATH, "data_train.json"), "w") as fp:
+    with open(os.path.join(data_folder_path, "data_train.json"), "w") as fp:
         json.dump(data_train, fp, indent=4)
 
-    with open(os.path.join(paths.DATA_FOLDER_PATH, "data_valid.json"), "w") as fp:
+    with open(os.path.join(data_folder_path, "data_valid.json"), "w") as fp:
         json.dump(data_val, fp, indent=4)

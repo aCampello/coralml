@@ -12,8 +12,17 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--instructions", help="Path to instructions.json file", type=str,
                         default=default_instructions)
+    parser.add_argument('--data_folder_path', help='Path to the data directory, where to save the outputs.',
+                        type=str, default=paths.DATA_FOLDER_PATH)
+    parser.add_argument('--models_folder_path', help='Path to the data directory, where to save the outputs.',
+                        type=str, default=paths.MODELS_FOLDER_PATH)
 
     args = parser.parse_args()
+
+    # If data_folder_path is provided use this one, otherwise use the pre-configured in paths.
+
+    data_folder_path = args.data_folder_path
+    models_folder_path = args.models_folder_path
 
     instruction_keys = [
         STR.EPOCHS,
@@ -46,13 +55,14 @@ if __name__ == "__main__":
     # with real instruction file
     image_base_dir = "data"
 
-    with open(os.path.join(paths.DATA_FOLDER_PATH, "data_train.json"), "r") as fp:
+    with open(os.path.join(data_folder_path, "data_train.json"), "r") as fp:
         data_train = json.load(fp)
 
-    with open(os.path.join(paths.DATA_FOLDER_PATH, "data_valid.json"), "r") as fp:
+    with open(os.path.join(data_folder_path, "data_valid.json"), "r") as fp:
         data_valid = json.load(fp)
 
     train(data_train=data_train,
           data_valid=data_valid,
           image_base_dir=image_base_dir,
-          instructions=instructions)
+          instructions=instructions,
+          models_folder_path=models_folder_path)

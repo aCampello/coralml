@@ -2,13 +2,14 @@
 matplotlib
 opencv-python
 scikit-learn
-
-# Pinned references (because I am afraid of unpinning)
-torchviz==0.0.1
-torchvision==0.2.2
-tensorboardX==1.6
-jupyter==1.0.0
-tqdm==4.31.1
-ipdb==0.12
-numpy==1.16.2
-imdirect==0.5.0
+torchviz
+torchvision
+tensorboardX
+jupyter
+tqdm
+ipdb
+numpy
+imdirect
+torch
+torchvision
+mpi4py

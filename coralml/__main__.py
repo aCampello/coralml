@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 
@@ -6,12 +7,13 @@ from coralml.ml.train import train
 import coralml.constants.strings as STR
 
 if __name__ == "__main__":
-    # train(data_train, data_valid, image_base_dir, instructions)
+    default_instructions = os.path.join(paths.DATA_FOLDER_PATH, "instructions.json")
 
-    # image_base_dir = A directory with all CLEF images (for training and validating)
-    # data_train
-    # data_valid
-    # instructions: Dict - has to have the following keys:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--instructions", help="Path to instructions.json file", type=str,
+                        default=default_instructions)
+
+    args = parser.parse_args()
 
     instruction_keys = [
         STR.EPOCHS,
@@ -36,7 +38,7 @@ if __name__ == "__main__":
         else:
             print(key)
 
-    with open(os.path.join(paths.DATA_FOLDER_PATH, "instructions.json"), "r") as fp:
+    with open(args.instructions, "r") as fp:
         instructions = json.load(fp)  # To be replaced
 
     print("Training with instructions")

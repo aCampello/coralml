@@ -103,6 +103,17 @@ RUN cd /img                                                                 && \
 
 
 #-------------------------------------------------------------------------------
+# Install DETR dependencies
+#
+
+RUN git clone https://github.com/facebookresearch/detr.git
+
+RUN python3 -m pip install cython scipy
+RUN python3 -m pip install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
+RUN python3 -m pip install git+https://github.com/cocodataset/panopticapi.git
+RUN python3 -m pip install submitit
+
+#-------------------------------------------------------------------------------
 # LDCONFIG
 #
 # We recommend running an /sbin/ldconfig as part of the image build (e.g. in

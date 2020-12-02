@@ -34,7 +34,7 @@ from metrics import Evaluator
 
 class Trainer:
 
-    def __init__(self, data_train, data_valid, image_base_dir, instructions):
+    def __init__(self, data_train, data_valid, image_base_dir, instructions, models_folder_path=None):
         """
 
         :param data_train:
@@ -66,7 +66,8 @@ class Trainer:
         # now = time.localtime()
         # start_time = "{}-{}-{}T{}:{}:{}".format(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min,
         #                                         now.tm_sec)
-        experiment_folder_path = os.path.join(paths.MODELS_FOLDER_PATH, self.model_name)
+        models_folder_path = models_folder_path or paths.MODELS_FOLDER_PATH
+        experiment_folder_path = os.path.join(models_folder_path, self.model_name)
 
         if os.path.exists(experiment_folder_path):
             Warning("Experiment folder exists already. Files might be overwritten")
@@ -295,8 +296,8 @@ class Trainer:
         self.saver.save_checkpoint(self.model, is_best, epoch)
 
 
-def train(data_train, data_valid, image_base_dir, instructions):
-    trainer = Trainer(data_train, data_valid, image_base_dir, instructions)
+def train(data_train, data_valid, image_base_dir, instructions, models_folder_path=None):
+    trainer = Trainer(data_train, data_valid, image_base_dir, instructions, models_folder_path=models_folder_path)
 
     epochs = instructions[STR.EPOCHS]
     for epoch in range(1, epochs + 1):

@@ -34,7 +34,7 @@ from metrics import Evaluator
 
 class Trainer:
 
-    def __init__(self, data_train, data_valid, image_base_dir, instructions,models_folder_path=None):
+    def __init__(self, data_train, data_valid, image_base_dir, instructions, models_folder_path=None):
         """
 
         :param data_train:

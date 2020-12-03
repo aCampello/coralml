@@ -2,6 +2,21 @@
 
 This is the repository for the ImageCLEF team at the [NOAA-NVIDIA](https://www.gpuhackathons.org/event/noaa-gpu-hackathon) hackathon
 
+## Status
+
+|Model|Status|Best Result|
+|---|---|---|
+|[Deep Segmentation'19](http://www.dei.unipd.it/~ferro/CLEF-WN-Drafts/CLEF2019/paper_151.pdf)| ✔️ Implemented|❌ TBC|
+|DETR|❌ Not Implemented|❌ TBC|
+
+Evaluation tasks
+
+|Task|Implemented|
+|----|-----|
+|CLEF data| ❌ In progress|
+|NOAA data| ❌ Not implemented|
+
+
 ## Data
 
 In order to obtain the training data (for the 2020 ImageCLEF competition): 

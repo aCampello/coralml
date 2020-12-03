@@ -63,6 +63,7 @@ if __name__ == "__main__":
 
     train(data_train=data_train,
           data_valid=data_valid,
+          data_folder_path=data_folder_path,
           image_base_dir=image_base_dir,
           instructions=instructions,
           models_folder_path=models_folder_path)

@@ -34,7 +34,8 @@ from metrics import Evaluator
 
 class Trainer:
 
-    def __init__(self, data_train, data_valid, image_base_dir, instructions, models_folder_path=None):
+    def __init__(self, data_train, data_valid, image_base_dir, instructions, models_folder_path=None,
+                 data_folder_path=None):
         """
 
         :param data_train:
@@ -67,6 +68,7 @@ class Trainer:
         # start_time = "{}-{}-{}T{}:{}:{}".format(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min,
         #                                         now.tm_sec)
         models_folder_path = models_folder_path or paths.MODELS_FOLDER_PATH
+        data_folder_path = data_folder_path or paths.DATA_FOLDER_PATH
         experiment_folder_path = os.path.join(models_folder_path, self.model_name)
 
         if os.path.exists(experiment_folder_path):
@@ -84,7 +86,7 @@ class Trainer:
         nn_input_size = instructions[STR.NN_INPUT_SIZE]
         state_dict_file_path = instructions.get(STR.STATE_DICT_FILE_PATH, None)
 
-        self.colour_mapping = mapping.get_colour_mapping()
+        self.colour_mapping = mapping.get_colour_mapping(data_folder_path=data_folder_path)
 
         # define transformers for training
         crops_per_image = instructions.get(STR.CROPS_PER_IMAGE, 10)
@@ -165,6 +167,7 @@ class Trainer:
                 print("Using ", torch.cuda.device_count(), " GPUs!")
                 self.model = nn.DataParallel(self.model)
 
+        print(f"Using {self.device}")
         self.model.to(self.device)
 
         # Define Optimizer
@@ -296,8 +299,9 @@ class Trainer:
         self.saver.save_checkpoint(self.model, is_best, epoch)
 
 
-def train(data_train, data_valid, image_base_dir, instructions, models_folder_path=None):
-    trainer = Trainer(data_train, data_valid, image_base_dir, instructions, models_folder_path=models_folder_path)
+def train(data_train, data_valid, image_base_dir, instructions, models_folder_path=None, data_folder_path=None):
+    trainer = Trainer(data_train, data_valid, image_base_dir, instructions,
+                      models_folder_path=models_folder_path, data_folder_path=data_folder_path)
 
     epochs = instructions[STR.EPOCHS]
     for epoch in range(1, epochs + 1):

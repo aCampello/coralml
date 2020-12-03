@@ -39,7 +39,7 @@ def parse_csv_data_file(csv_file_path):
     return data
 
 
-def create_annotation_masks(data_folder_path):
+def create_annotation_masks(data_folder_path, annotations_file="annotations_train.csv"):
     """
     Create mask images acting as annotations from the annotations data file. Mask files will be stored in the
     path.MASK_FOLDER_PATH folder
@@ -56,7 +56,7 @@ def create_annotation_masks(data_folder_path):
     os.makedirs(image_folder_path, exist_ok=True)
     os.makedirs(mask_folder_path, exist_ok=True)
 
-    csv_file_path = os.path.join(data_folder_path, "annotations_test.csv")
+    csv_file_path = os.path.join(data_folder_path, annotations_file)
     data = parse_csv_data_file(csv_file_path)
 
     # create a list containing all classes
@@ -122,5 +122,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_folder_path', default=None, type=str,
                         help='Path to the data directory, where to save the outputs.')
-    data_folder_path = parser.parse_args().data_folder_path
-    create_annotation_masks(data_folder_path=data_folder_path)
+    parser.add_argument('--annotations_file', default='annotations_train.csv', type=str,
+                        help='Name of annotations file')
+    args = parser.parse_args()
+    data_folder_path = args.data_folder_path
+    annotations_file = args.annotations_file
+    create_annotation_masks(data_folder_path=data_folder_path, annotations_file=annotations_file)

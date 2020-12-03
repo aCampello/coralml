@@ -85,6 +85,7 @@ def calculate_split(mask_folder_path, colour_mapping, training_size=0.85):
     weights = 1 / counts.sum(axis=0) / counts.sum()
     distance_metric = calc_distance_metric(weights)
 
+    print(weights)
     # index where to split the data into training and validation set
     split_index = int(len(names) * training_size)
 
@@ -183,7 +184,7 @@ if __name__ == "__main__":
     data_folder_path = (data_folder_path if data_folder_path else paths.DATA_FOLDER_PATH)
     mask_folder_path = os.path.join(data_folder_path, 'masks')
 
-    colour_mapping = mapping.get_colour_mapping()
+    colour_mapping = mapping.get_colour_mapping(data_folder_path)
 
     files_train, files_valid = calculate_split(mask_folder_path, colour_mapping)
 

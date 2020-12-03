@@ -55,7 +55,7 @@ RUN bash -c 'echo "deb http://developer.download.nvidia.com/compute/machine-lear
 RUN \
     apt-get update                                                          && \
     apt-get --yes install                                                      \
-        cuda-10-1                                                              \
+        cuda-10-2                                                              \
         libcudnn7-dev                                                          \
         libnccl-dev
 

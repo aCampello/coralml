@@ -4,11 +4,11 @@ This is the repository for the ImageCLEF team at the [NOAA-NVIDIA](https://www.g
 
 ## Status
 
-|Model|Status|Best Result|
+|Model|Status|Evaluation CLEF DATA|Evaluation NOAA DATA|
 |---|---|---|
-|[Deep Segmentation'19](http://www.dei.unipd.it/~ferro/CLEF-WN-Drafts/CLEF2019/paper_151.pdf)| ✔️ Implemented| ❌ TBC|
-|Mask-RCNN | ✔️ Implemented| ❌ TBC|
-|DETR|❌ Not Implemented| ❌ TBC|
+|[Deep Segmentation'19](http://www.dei.unipd.it/~ferro/CLEF-WN-Drafts/CLEF2019/paper_151.pdf)| ✔️ Implemented| ❌ TBC| - |
+|Mask-RCNN | ✔️ Implemented| ❌ TBC| - |
+|DETR|❌ Not Implemented| ❌ TBC| - |
 
 Evaluation tasks
 

@@ -10,12 +10,6 @@ This is the repository for the ImageCLEF team at the [NOAA-NVIDIA](https://www.g
 |Mask-RCNN | ✅ Implemented |  ❓ Implemented (numbers TBC) | ❌ Not Implemented |
 |DETR| ✅ Not Implemented| ❌ Not Implemented | ❌ Not Implemented |
 
-Evaluation tasks
-
-|Task|Implemented|
-|----|-----|
-|CLEF data| ❌ In progress|
-|NOAA data| ❌ Not implemented|
 
 
 ## Data

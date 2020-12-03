@@ -22,6 +22,7 @@ And unzip it using the password provided by @aCampello, for example with
 
 ```bash
 unzip -j -P <password> imageCLEFcoral2020_training_v4.zip -d data/images
+unzip -j -P <password> annotations-train-NVIDIA-NOAA-2020.zip -d data/images
 ```
 
 

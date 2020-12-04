@@ -208,7 +208,7 @@ class Trainer:
 
         self.best_prediction = 0.0
 
-    def train(self, epoch):
+    def train(self, epoch, log_path=None):
         self.model.train()
         train_loss = 0.0
 
@@ -251,7 +251,7 @@ class Trainer:
 
         print("Loss: {:.2f}".format(train_loss))
 
-    def validation(self, epoch):
+    def validation(self, epoch, log_path=None):
 
         self.model.eval()
         self.evaluator.reset()
@@ -291,6 +291,12 @@ class Trainer:
         print("[Epoch: {}, num crops: {}]".format(epoch, num_batches_val * self.batch_size))
         print("Acc:{:.2f}, Acc_class:{:.2f}, mIoU:{:.2f}, fwIoU: {:.2f}".format(Acc, Acc_class, mIoU, FWIoU))
         print("Loss: {:.2f}".format(test_loss))
+        if log_path:
+            with open(log_path, 'w+') as f:
+                f.write("[Epoch: {}, num crops: {}]\n".format(epoch, num_batches_val * self.batch_size))
+                f.write("Acc:{:.2f}, Acc_class:{:.2f}, mIoU:{:.2f}, fwIoU: {:.2f}\n".format(Acc, Acc_class, mIoU,
+                                                                                            FWIoU))
+                f.write("Loss: {:.2f}".format(test_loss))
 
         new_pred = mIoU
         is_best = new_pred > self.best_prediction
@@ -305,5 +311,5 @@ def train(data_train, data_valid, image_base_dir, instructions, models_folder_pa
 
     epochs = instructions[STR.EPOCHS]
     for epoch in range(1, epochs + 1):
-        trainer.train(epoch)
-        trainer.validation(epoch)
+        trainer.train(epoch, log_path='log.txt')
+        trainer.validation(epoch, log_path='log.txt')

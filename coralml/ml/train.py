@@ -292,11 +292,11 @@ class Trainer:
         print("Acc:{:.2f}, Acc_class:{:.2f}, mIoU:{:.2f}, fwIoU: {:.2f}".format(Acc, Acc_class, mIoU, FWIoU))
         print("Loss: {:.2f}".format(test_loss))
         if log_path:
-            with open(log_path, 'w+') as f:
+            with open(log_path, 'a+') as f:
                 f.write("[Epoch: {}, num crops: {}]\n".format(epoch, num_batches_val * self.batch_size))
                 f.write("Acc:{:.2f}, Acc_class:{:.2f}, mIoU:{:.2f}, fwIoU: {:.2f}\n".format(Acc, Acc_class, mIoU,
                                                                                             FWIoU))
-                f.write("Loss: {:.2f}".format(test_loss))
+                f.write("Loss: {:.2f}\n".format(test_loss))
 
         new_pred = mIoU
         is_best = new_pred > self.best_prediction
@@ -305,11 +305,12 @@ class Trainer:
         self.saver.save_checkpoint(self.model, is_best, epoch)
 
 
-def train(data_train, data_valid, image_base_dir, instructions, models_folder_path=None, data_folder_path=None):
+def train(data_train, data_valid, image_base_dir, instructions, models_folder_path=None,
+          log_file='log.txt', data_folder_path=None):
     trainer = Trainer(data_train, data_valid, image_base_dir, instructions,
                       models_folder_path=models_folder_path, data_folder_path=data_folder_path)
 
     epochs = instructions[STR.EPOCHS]
     for epoch in range(1, epochs + 1):
-        trainer.train(epoch, log_path='log.txt')
-        trainer.validation(epoch, log_path='log.txt')
+        trainer.train(epoch, log_path=log_file)
+        trainer.validation(epoch, log_path=log_file)

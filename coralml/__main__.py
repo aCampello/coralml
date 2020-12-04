@@ -16,6 +16,8 @@ if __name__ == "__main__":
                         type=str, default=paths.DATA_FOLDER_PATH)
     parser.add_argument('--models_folder_path', help='Path to the data directory, where to save the outputs.',
                         type=str, default=paths.MODELS_FOLDER_PATH)
+    parser.add_argument('--log_file', help='Path to the log_file',
+                        type=str, default=paths.MODELS_FOLDER_PATH)
 
     args = parser.parse_args()
 
@@ -63,6 +65,7 @@ if __name__ == "__main__":
 
     train(data_train=data_train,
           data_valid=data_valid,
+          log_file=args.log_file,
           data_folder_path=data_folder_path,
           image_base_dir=image_base_dir,
           instructions=instructions,

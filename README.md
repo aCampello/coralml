@@ -6,7 +6,7 @@ This is the repository for the ImageCLEF team at the [NOAA-NVIDIA](https://www.g
 
 |Model|Status|Evaluation CLEF DATA|Evaluation NOAA DATA|
 |---|---|---| --- |
-|[Deep Segmentation'19](http://www.dei.unipd.it/~ferro/CLEF-WN-Drafts/CLEF2019/paper_151.pdf)| ✅ Implemented| ✅ 18% IoU (test data) <br> ❌ Not Implemented (eval data) | ❌ Not Implemented |
+|[Deep Segmentation'19](http://www.dei.unipd.it/~ferro/CLEF-WN-Drafts/CLEF2019/paper_151.pdf)| ✅ Implemented| ✅ 18% IoU (test data) <br> ❌ Not Implemented (eval data) | ❓ Implemented (numbers TBC) |
 |Mask-RCNN | ✅ Implemented |  ❓ Implemented (numbers TBC) | ❌ Not Implemented |
 |DETR| ✅ Not Implemented| ❌ Not Implemented | ❌ Not Implemented |
 

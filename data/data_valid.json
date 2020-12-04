@@ -1,6 +1,266 @@
 [
     {
-        "image_name": "images/2018_0714_112428_025.JPG",
-        "mask_name": "masks/2018_0714_112428_025_mask.png"
+        "image_name": "images/2018_0729_112451_048.JPG",
+        "mask_name": "masks/2018_0729_112451_048_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112519_060.JPG",
+        "mask_name": "masks/2018_0729_112519_060_mask.png"
+    },
+    {
+        "image_name": "images/2018_0712_074150_204.JPG",
+        "mask_name": "masks/2018_0712_074150_204_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112638_056.JPG",
+        "mask_name": "masks/2018_0714_112638_056_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112611_047.JPG",
+        "mask_name": "masks/2018_0714_112611_047_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112434_021.JPG",
+        "mask_name": "masks/2018_0714_112434_021_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112408_021.JPG",
+        "mask_name": "masks/2018_0714_112408_021_mask.png"
+    },
+    {
+        "image_name": "images/2018_0712_073420_047.JPG",
+        "mask_name": "masks/2018_0712_073420_047_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112605_060.JPG",
+        "mask_name": "masks/2018_0714_112605_060_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112443_024.JPG",
+        "mask_name": "masks/2018_0714_112443_024_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112409_029.JPG",
+        "mask_name": "masks/2018_0729_112409_029_mask.png"
+    },
+    {
+        "image_name": "images/2018_0712_074029_177.JPG",
+        "mask_name": "masks/2018_0712_074029_177_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112356_017.JPG",
+        "mask_name": "masks/2018_0714_112356_017_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112540_049.JPG",
+        "mask_name": "masks/2018_0714_112540_049_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112347_014.JPG",
+        "mask_name": "masks/2018_0714_112347_014_mask.png"
+    },
+    {
+        "image_name": "images/2018_0712_074244_215.JPG",
+        "mask_name": "masks/2018_0712_074244_215_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112410_037.JPG",
+        "mask_name": "masks/2018_0729_112410_037_mask.png"
+    },
+    {
+        "image_name": "images/2018_0712_074208_210.JPG",
+        "mask_name": "masks/2018_0712_074208_210_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112341_013.JPG",
+        "mask_name": "masks/2018_0729_112341_013_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112628_069.JPG",
+        "mask_name": "masks/2018_0729_112628_069_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112702_064.JPG",
+        "mask_name": "masks/2018_0714_112702_064_mask.png"
+    },
+    {
+        "image_name": "images/2018_0712_073543_081.JPG",
+        "mask_name": "masks/2018_0712_073543_081_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112610_053.JPG",
+        "mask_name": "masks/2018_0714_112610_053_mask.png"
+    },
+    {
+        "image_name": "images/2018_0712_073956_159.JPG",
+        "mask_name": "masks/2018_0712_073956_159_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112449_032.JPG",
+        "mask_name": "masks/2018_0714_112449_032_mask.png"
+    },
+    {
+        "image_name": "images/2018_0712_073504_057.JPG",
+        "mask_name": "masks/2018_0712_073504_057_mask.png"
+    },
+    {
+        "image_name": "images/2018_0712_074158_206.JPG",
+        "mask_name": "masks/2018_0712_074158_206_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112505_040.JPG",
+        "mask_name": "masks/2018_0714_112505_040_mask.png"
+    },
+    {
+        "image_name": "images/2018_0712_073722_114.JPG",
+        "mask_name": "masks/2018_0712_073722_114_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112606_068.JPG",
+        "mask_name": "masks/2018_0729_112606_068_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112339_024.JPG",
+        "mask_name": "masks/2018_0729_112339_024_mask.png"
+    },
+    {
+        "image_name": "images/2018_0712_073428_045.JPG",
+        "mask_name": "masks/2018_0712_073428_045_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112521_058.JPG",
+        "mask_name": "masks/2018_0729_112521_058_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112423_026.JPG",
+        "mask_name": "masks/2018_0714_112423_026_mask.png"
+    },
+    {
+        "image_name": "images/2018_0712_073750_117.JPG",
+        "mask_name": "masks/2018_0712_073750_117_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112646_065.JPG",
+        "mask_name": "masks/2018_0714_112646_065_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112509_054.JPG",
+        "mask_name": "masks/2018_0729_112509_054_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112613_064.JPG",
+        "mask_name": "masks/2018_0729_112613_064_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112417_025.JPG",
+        "mask_name": "masks/2018_0729_112417_025_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112546_045.JPG",
+        "mask_name": "masks/2018_0714_112546_045_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112409_034.JPG",
+        "mask_name": "masks/2018_0729_112409_034_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112515_051.JPG",
+        "mask_name": "masks/2018_0729_112515_051_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112517_044.JPG",
+        "mask_name": "masks/2018_0714_112517_044_mask.png"
+    },
+    {
+        "image_name": "images/2018_0712_073929_150.JPG",
+        "mask_name": "masks/2018_0712_073929_150_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112501_054.JPG",
+        "mask_name": "masks/2018_0729_112501_054_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112523_038.JPG",
+        "mask_name": "masks/2018_0714_112523_038_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112412_030.JPG",
+        "mask_name": "masks/2018_0729_112412_030_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112355_014.JPG",
+        "mask_name": "masks/2018_0714_112355_014_mask.png"
+    },
+    {
+        "image_name": "images/2018_0712_073714_102.JPG",
+        "mask_name": "masks/2018_0712_073714_102_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112522_043.JPG",
+        "mask_name": "masks/2018_0714_112522_043_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112456_029.JPG",
+        "mask_name": "masks/2018_0714_112456_029_mask.png"
+    },
+    {
+        "image_name": "images/2018_0712_073852_133.JPG",
+        "mask_name": "masks/2018_0712_073852_133_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112535_035.JPG",
+        "mask_name": "masks/2018_0714_112535_035_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112625_058.JPG",
+        "mask_name": "masks/2018_0714_112625_058_mask.png"
+    },
+    {
+        "image_name": "images/2018_0712_073923_145.JPG",
+        "mask_name": "masks/2018_0712_073923_145_mask.png"
+    },
+    {
+        "image_name": "images/2018_0712_073834_138.JPG",
+        "mask_name": "masks/2018_0712_073834_138_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112547_055.JPG",
+        "mask_name": "masks/2018_0729_112547_055_mask.png"
+    },
+    {
+        "image_name": "images/2018_0712_073722_103.JPG",
+        "mask_name": "masks/2018_0712_073722_103_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112312_015.JPG",
+        "mask_name": "masks/2018_0729_112312_015_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112316_019.JPG",
+        "mask_name": "masks/2018_0729_112316_019_mask.png"
+    },
+    {
+        "image_name": "images/2018_0714_112607_052.JPG",
+        "mask_name": "masks/2018_0714_112607_052_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112435_031.JPG",
+        "mask_name": "masks/2018_0729_112435_031_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112522_047.JPG",
+        "mask_name": "masks/2018_0729_112522_047_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112432_030.JPG",
+        "mask_name": "masks/2018_0729_112432_030_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112430_041.JPG",
+        "mask_name": "masks/2018_0729_112430_041_mask.png"
+    },
+    {
+        "image_name": "images/2018_0729_112436_043.JPG",
+        "mask_name": "masks/2018_0729_112436_043_mask.png"
     }
 ]

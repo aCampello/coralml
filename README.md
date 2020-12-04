@@ -59,8 +59,9 @@ pip install -r requirements.txt
 pip install -e .
 ```
 
-### Usage
+## Usage
 
+### Train
 First move all the CLEF images to `data/images` and the csv with clef annotations in `data/annotations.csv`. Then create masks with
 
 ```bash
@@ -79,6 +80,17 @@ Modify the file `data/instructions.json` to change hyperparameters of the networ
 python -m coralml --instructions data/instructions.json
 ```
 
+### Evaluate against CLEF 2020
+
+```bash
+python coralml/data/create_masks.py --data_folder_path data --image_folder images_val --mask_folder masks_val
+--annotations_file imageCLEFcoral2020_GT.csv
+```
+
+```bash
+python coralml/ml/evaluate_clef.py --data_folder_path data --image_folder images_val \ 
+--mask_folder masks_val --model_path models/test_model/model_best.pth
+```
 
 ### (To be deprecated): old conda instructions
 	

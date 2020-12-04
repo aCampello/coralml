@@ -56,10 +56,13 @@ if __name__ == "__main__":
     image_base_dir = "data"
 
     with open(os.path.join(data_folder_path, "data_train.json"), "r") as fp:
-        data_train = json.load(fp)[:3]
+        data_train = json.load(fp)
 
     with open(os.path.join(data_folder_path, "data_valid.json"), "r") as fp:
-        data_valid = json.load(fp)[:3]
+        data_valid = json.load(fp)
+
+    print(f"Training on {len(data_train)} images.")
+    print(f"Validating on {len(data_valid)} images.")
 
     train(data_train=data_train,
           data_valid=data_valid,

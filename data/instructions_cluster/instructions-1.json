@@ -1,5 +1,5 @@
 {
-  "epochs": 3,
+  "epochs": 50,
   "model_name": "model-1",
   "nn_input_shape": 256,
   "crops": 16,

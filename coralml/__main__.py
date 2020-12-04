@@ -17,7 +17,7 @@ if __name__ == "__main__":
     parser.add_argument('--models_folder_path', help='Path to the data directory, where to save the outputs.',
                         type=str, default=paths.MODELS_FOLDER_PATH)
     parser.add_argument('--log_file', help='Path to the log_file',
-                        type=str, default=paths.MODELS_FOLDER_PATH)
+                        type=str, default='log.txt')
 
     args = parser.parse_args()
 

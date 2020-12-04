@@ -2,20 +2,25 @@ import warnings
 import os
 import shutil
 import json
+import sys
 
 import numpy as np
 import torch
-from coralml.constants import mapping
+from coralml.constants import mapping, paths
+
+sys.path.extend([paths.DEEPLAB_FOLDER_PATH, os.path.join(paths.DEEPLAB_FOLDER_PATH, "utils")])
+
+from modeling.deeplab import DeepLab
 
 from tensorboardX import SummaryWriter
 
 
-def colour_mask_to_class_id_mask(colour_mask):
+def colour_mask_to_class_id_mask(colour_mask, data_folder_path=None):
     """
     :param colour_mask:
     :return:
     """
-    colour_mapping = mapping.get_colour_mapping()
+    colour_mapping = mapping.get_colour_mapping(data_folder_path)
     class_id_mask = np.zeros(colour_mask.shape[:2]).astype(np.uint8)
 
     for i, k in enumerate(sorted(colour_mapping.keys())):
@@ -215,3 +220,17 @@ class TensorboardSummary(object):
     def create_summary(self):
         writer = SummaryWriter(log_dir=os.path.join(self.directory))
         return writer
+
+
+def load_model(model_path, num_classes=14, backbone='resnet', output_stride=16):
+    print(f"Loading model from {model_path}")
+    model = DeepLab(num_classes=num_classes,
+                    backbone=backbone,
+                    output_stride=output_stride)
+
+    model.load_state_dict(torch.load(model_path))
+    model.eval()
+
+    return model
+
+

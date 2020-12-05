@@ -82,8 +82,18 @@ def create_annotation_masks(data_folder_path, image_folder="images",
 
     for i, image_name in enumerate(data.keys()):
         # create mask based on the size of the corresponding image
+        print(image_folder_path)
+        print(image_name)
         image_path = os.path.join(image_folder_path, image_name)
-        image_height, image_width = cv2.imread(image_path).shape[:2]
+        # CLEF files has some images which are JPG in caps
+        try: 
+            image_height, image_width = cv2.imread(image_path).shape[:2]
+        except AttributeError:
+            image_path_head, ext = image_path.split('.')
+            # Tries with the reverse capitalisation
+            image_path = image_path_head + ('.JPG' if ext.islower() else '.jpg')
+            image_height, image_width = cv2.imread(image_path).shape[:2]
+        
         mask = np.zeros((image_height, image_width), dtype=np.uint8)
 
         # go through each annotation entry and fill the corresponding polygon. Color corresponds to class

@@ -116,6 +116,7 @@ class Trainer:
         # set up data loaders
         dataset_train = DictArrayDataSet(image_base_dir=image_base_dir,
                                          data=data_train,
+                                         data_folder_path=data_folder_path,
                                          num_classes=len(self.colour_mapping.keys()),
                                          transformation=transformations_train)
         # define batch sizes
@@ -134,6 +135,7 @@ class Trainer:
 
         dataset_valid = DictArrayDataSet(image_base_dir=image_base_dir,
                                          data=data_valid,
+                                         data_folder_path=data_folder_path,
                                          num_classes=len(self.colour_mapping.keys()),
                                          transformation=transformations_valid)
 

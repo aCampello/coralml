@@ -6,7 +6,9 @@ import sys
 
 import numpy as np
 import torch
+import torch.nn as nn
 from coralml.constants import mapping, paths
+
 
 sys.path.extend([paths.DEEPLAB_FOLDER_PATH, os.path.join(paths.DEEPLAB_FOLDER_PATH, "utils")])
 
@@ -228,8 +230,21 @@ def load_model(model_path, num_classes=14, backbone='resnet', output_stride=16):
                     backbone=backbone,
                     output_stride=output_stride)
 
+    pretrained_dict = torch.load(model_path, map_location=lambda storage, loc: storage)
+    model_dict = model.state_dict()
+    # 1. filter out unnecessary keys and mismatching sizes
+    pretrained_dict = {k: v for k, v in pretrained_dict.items() if
+                       (k in model_dict) and (model_dict[k].shape == pretrained_dict[k].shape)}
+
+    # 2. overwrite entries in the existing state dict
+    model_dict.update(pretrained_dict)
+    # 3. load the new state dict
+    model.load_state_dict(model_dict)
+
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    model.load_state_dict(torch.load(model_path))
+    if torch.cuda.device_count() > 1:
+        print("Load model in  ", torch.cuda.device_count(), " GPUs!")
+        model = nn.DataParallel(model)
     model.to(device)
     model.eval()
 

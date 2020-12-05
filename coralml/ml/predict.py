@@ -159,7 +159,7 @@ def predict(image_file_paths, model, nn_input_size, res_fcn=None, window_sizes=N
         if res_fcn is not None:
             res_fcn(prediction, i)
         else:
-            prediction_results.append(prediction)
+            yield prediction
 
     if res_fcn is None:
         return prediction_results

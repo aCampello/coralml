@@ -4,5 +4,6 @@
   "nn_input_shape": 256,
   "crops": 16,
   "images_per_batch": 2,
-  "batch_size": 32
+  "batch_size": 32,
+  "multi_gpu": true
 }

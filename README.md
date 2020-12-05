@@ -90,13 +90,11 @@ python -m coralml --instructions data/instructions.json
 ### Evaluate against CLEF 2020
 
 ```bash
-python coralml/data/create_masks.py --data_folder_path data --image_folder images_val --mask_folder masks_val
---annotations_file imageCLEFcoral2020_GT.csv
+python coralml/data/create_masks.py --data_folder_path data --image_folder images_val --mask_folder masks_val --annotations_file imageCLEFcoral2020_GT.csv
 ```
 
 ```bash
-python coralml/ml/evaluate_clef.py --data_folder_path data --image_folder images_val \ 
---mask_folder masks_val --model_path models/test_model/model_best.pth
+python coralml/ml/evaluate_clef.py --data_folder_path data --image_folder images_val --mask_folder masks_val --model_path models/test_model/model_best.pth
 ```
 
 ### (To be deprecated): old conda instructions

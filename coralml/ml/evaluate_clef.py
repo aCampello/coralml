@@ -20,11 +20,25 @@ from metrics import Evaluator
 from coralml.ml.utils import load_model, colour_mask_to_class_id_mask
 
 
+def _calculate_iou(intersection_per_substrate, union_per_substrate, classes_map):
+    eps = 10e-16
+    # Ads epsilon to the denominator to avoid division by zero
+    iou_per_substrate = {
+        substrate_name: intersection_per_substrate[substrate_name] / (union_per_substrate[substrate_name] + eps)
+        for substrate_name in classes_map.values()
+    }
+
+    iou_average = sum(intersection_per_substrate.values()) / \
+                  sum(union_per_substrate.values())
+
+    return iou_per_substrate, iou_average
+
 def evaluate(image_file_paths, gt_file_paths, model_path,
              nn_input_size, window_sizes=None,
              step_sizes=None,
              device=None,
-             data_folder_path=None):
+             data_folder_path=None,
+             log_file_path=None):
     """
     Evaluate model performance
     :param image_file_paths: paths to images that will be predicted
@@ -68,15 +82,19 @@ def evaluate(image_file_paths, gt_file_paths, model_path,
                 intersection_per_substrate[substrate_name] += intersection
                 union_per_substrate[substrate_name] += union
 
-    eps = 10e-16
-    # Ads epsilon to the denominator to avoid division by zero
-    iou_per_substrate = {
-        substrate_name: intersection_per_substrate[substrate_name] / (union_per_substrate[substrate_name] + eps)
-        for substrate_name in classes_map.values()
-    }
+        iou_per_substrate, iou_average = _calculate_iou(
+            intersection_per_substrate,
+            union_per_substrate,
+            classes_map
+        )
 
-    iou_average = sum(intersection_per_substrate.values()) / \
-                  sum(union_per_substrate.values())
+        # Gradually append accuracy stats
+
+        if log_file_path:
+            with open(log_file_path, 'w') as f:
+                f.write(json.dumps(iou_per_substrate, indent=4))
+                f.write('\n')
+                f.write(f"avg: {iou_average}")
 
     return iou_per_substrate, iou_average
 
@@ -171,10 +189,5 @@ if __name__ == "__main__":
         gt_file_paths=masks,
         nn_input_size=256,
         window_sizes=[500, 1000, 1500],
-        step_sizes=[400, 800, 1200])
-
-    if args.log_file_path:
-        with open(args.log_file_path, 'w') as f:
-            f.write(json.dumps(iou_per_substrate, indent=4))
-            f.write('\n')
-            f.write(f"avg: {iou_average}")
+        step_sizes=[400, 800, 1200],
+        log_file_path=args.log_file_path)

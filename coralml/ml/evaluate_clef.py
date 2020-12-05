@@ -167,11 +167,11 @@ if __name__ == "__main__":
     iou_per_substrate, iou_average = evaluate(
         data_folder_path=args.data_folder_path,
         model_path=args.model_path,
-        image_file_paths=images[:2],
-        gt_file_paths=masks[:2],
+        image_file_paths=images,
+        gt_file_paths=masks,
         nn_input_size=256,
-        window_sizes=[500],
-        step_sizes=[400])
+        window_sizes=[500, 1000, 1500],
+        step_sizes=[400, 800, 1200])
 
     if args.log_file_path:
         with open(args.log_file_path, 'w') as f:

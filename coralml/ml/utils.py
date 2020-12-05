@@ -227,9 +227,12 @@ def load_model(model_path, num_classes=14, backbone='resnet', output_stride=16):
     model = DeepLab(num_classes=num_classes,
                     backbone=backbone,
                     output_stride=output_stride)
-
+    
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model.load_state_dict(torch.load(model_path))
+    model.to(device)
     model.eval()
+
 
     return model
 

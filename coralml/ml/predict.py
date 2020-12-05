@@ -133,7 +133,8 @@ def predict(image_file_paths, model, nn_input_size, res_fcn=None, window_sizes=N
     """
 
     device = device if device is not None else torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
+    #device = 'cpu'    
+    print(device)
     prediction_results = []
 
     pbar = tqdm(image_file_paths, ncols=50)

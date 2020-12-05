@@ -33,6 +33,7 @@ def _calculate_iou(intersection_per_substrate, union_per_substrate, classes_map)
 
     return iou_per_substrate, iou_average
 
+
 def evaluate(image_file_paths, gt_file_paths, model_path,
              nn_input_size, window_sizes=None,
              step_sizes=None,

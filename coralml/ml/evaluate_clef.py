@@ -66,7 +66,7 @@ def evaluate(image_file_paths, gt_file_paths, model_path,
                                       step_sizes=step_sizes,
                                       device=device)
 
-    #Calculates IoU looping over images and masks
+    # Calculates IoU looping over images and masks
 
     intersection_per_substrate = defaultdict(int)
     union_per_substrate = defaultdict(int)
@@ -190,5 +190,5 @@ if __name__ == "__main__":
         gt_file_paths=masks,
         nn_input_size=256,
         window_sizes=[500, 1000, 1500],
-        step_sizes=[400, 800, 1200],
+        step_sizes=[350, 750, 1000],
         log_file_path=args.log_file_path)

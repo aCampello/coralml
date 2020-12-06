@@ -35,7 +35,7 @@ from metrics import Evaluator
 class Trainer:
 
     def __init__(self, data_train, data_valid, image_base_dir, instructions, models_folder_path=None,
-                 data_folder_path=None):
+                 data_folder_path=None, checkpoint_file_path=None):
         """
 
         :param data_train:
@@ -153,9 +153,9 @@ class Trainer:
                              output_stride=instructions.get(STR.DEEPLAB_OUTPUT_STRIDE, 16))
 
         # load weights
-        if state_dict_file_path is not None:
+        if checkpoint_file_path is not None:
             print("loading state_dict from:")
-            print(state_dict_file_path)
+            print(checkpoint_file_path)
             load_state_dict(self.model, state_dict_file_path)
 
         learning_rate = instructions.get(STR.LEARNING_RATE, 1e-5)
@@ -308,9 +308,10 @@ class Trainer:
 
 
 def train(data_train, data_valid, image_base_dir, instructions, models_folder_path=None,
-          log_file='log.txt', data_folder_path=None):
+          log_file='log.txt', data_folder_path=None, checkpoint_file_path=None):
     trainer = Trainer(data_train, data_valid, image_base_dir, instructions,
-                      models_folder_path=models_folder_path, data_folder_path=data_folder_path)
+                      models_folder_path=models_folder_path, data_folder_path=data_folder_path,
+                      checkpoint_file_path=None)
 
     epochs = instructions[STR.EPOCHS]
     for epoch in range(1, epochs + 1):

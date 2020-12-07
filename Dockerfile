@@ -59,7 +59,7 @@ RUN \
         libcudnn7-dev                                                          \
         libnccl-dev
 
-ENV CUDAHOME /usr/local/cuda-10.1
+ENV CUDAHOME /usr/local/cuda-10.2
 
 #-------------------------------------------------------------------------------
 

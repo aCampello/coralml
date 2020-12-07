@@ -1,9 +1,8 @@
 {
   "epochs": 30,
-  "model_name": "test_model",
+  "model_name": "baseline_model",
   "nn_input_shape": 256,
-  "crops": 16,
+  "crops": 8,
   "images_per_batch": 2,
-  "batch_size": 32,
-  "multi_gpu": true
+  "batch_size": 16
 }

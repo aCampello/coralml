@@ -34,7 +34,8 @@ from metrics import Evaluator
 
 class Trainer:
 
-    def __init__(self, data_train, data_valid, image_base_dir, instructions, models_folder_path=None):
+    def __init__(self, data_train, data_valid, image_base_dir, instructions, models_folder_path=None,
+                 data_folder_path=None, checkpoint_file_path=None):
         """
 
         :param data_train:
@@ -67,6 +68,7 @@ class Trainer:
         # start_time = "{}-{}-{}T{}:{}:{}".format(now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min,
         #                                         now.tm_sec)
         models_folder_path = models_folder_path or paths.MODELS_FOLDER_PATH
+        data_folder_path = data_folder_path or paths.DATA_FOLDER_PATH
         experiment_folder_path = os.path.join(models_folder_path, self.model_name)
 
         if os.path.exists(experiment_folder_path):
@@ -84,7 +86,7 @@ class Trainer:
         nn_input_size = instructions[STR.NN_INPUT_SIZE]
         state_dict_file_path = instructions.get(STR.STATE_DICT_FILE_PATH, None)
 
-        self.colour_mapping = mapping.get_colour_mapping()
+        self.colour_mapping = mapping.get_colour_mapping(data_folder_path=data_folder_path)
 
         # define transformers for training
         crops_per_image = instructions.get(STR.CROPS_PER_IMAGE, 10)
@@ -114,6 +116,7 @@ class Trainer:
         # set up data loaders
         dataset_train = DictArrayDataSet(image_base_dir=image_base_dir,
                                          data=data_train,
+                                         data_folder_path=data_folder_path,
                                          num_classes=len(self.colour_mapping.keys()),
                                          transformation=transformations_train)
         # define batch sizes
@@ -132,6 +135,7 @@ class Trainer:
 
         dataset_valid = DictArrayDataSet(image_base_dir=image_base_dir,
                                          data=data_valid,
+                                         data_folder_path=data_folder_path,
                                          num_classes=len(self.colour_mapping.keys()),
                                          transformation=transformations_valid)
 
@@ -149,10 +153,10 @@ class Trainer:
                              output_stride=instructions.get(STR.DEEPLAB_OUTPUT_STRIDE, 16))
 
         # load weights
-        if state_dict_file_path is not None:
+        if checkpoint_file_path is not None:
             print("loading state_dict from:")
-            print(state_dict_file_path)
-            load_state_dict(self.model, state_dict_file_path)
+            print(checkpoint_file_path)
+            load_state_dict(self.model, checkpoint_file_path)
 
         learning_rate = instructions.get(STR.LEARNING_RATE, 1e-5)
         train_params = [{'params': self.model.get_1x_lr_params(), 'lr': learning_rate},
@@ -165,6 +169,7 @@ class Trainer:
                 print("Using ", torch.cuda.device_count(), " GPUs!")
                 self.model = nn.DataParallel(self.model)
 
+        print(f"Using {self.device}")
         self.model.to(self.device)
 
         # Define Optimizer
@@ -205,7 +210,7 @@ class Trainer:
 
         self.best_prediction = 0.0
 
-    def train(self, epoch):
+    def train(self, epoch, log_path=None):
         self.model.train()
         train_loss = 0.0
 
@@ -248,7 +253,7 @@ class Trainer:
 
         print("Loss: {:.2f}".format(train_loss))
 
-    def validation(self, epoch):
+    def validation(self, epoch, log_path=None):
 
         self.model.eval()
         self.evaluator.reset()
@@ -288,6 +293,12 @@ class Trainer:
         print("[Epoch: {}, num crops: {}]".format(epoch, num_batches_val * self.batch_size))
         print("Acc:{:.2f}, Acc_class:{:.2f}, mIoU:{:.2f}, fwIoU: {:.2f}".format(Acc, Acc_class, mIoU, FWIoU))
         print("Loss: {:.2f}".format(test_loss))
+        if log_path:
+            with open(log_path, 'a+') as f:
+                f.write("[Epoch: {}, num crops: {}]\n".format(epoch, num_batches_val * self.batch_size))
+                f.write("Acc:{:.2f}, Acc_class:{:.2f}, mIoU:{:.2f}, fwIoU: {:.2f}\n".format(Acc, Acc_class, mIoU,
+                                                                                            FWIoU))
+                f.write("Loss: {:.2f}\n".format(test_loss))
 
         new_pred = mIoU
         is_best = new_pred > self.best_prediction
@@ -296,10 +307,13 @@ class Trainer:
         self.saver.save_checkpoint(self.model, is_best, epoch)
 
 
-def train(data_train, data_valid, image_base_dir, instructions, models_folder_path=None):
-    trainer = Trainer(data_train, data_valid, image_base_dir, instructions, models_folder_path=models_folder_path)
+def train(data_train, data_valid, image_base_dir, instructions, models_folder_path=None,
+          log_file='log.txt', data_folder_path=None, checkpoint_file_path=None):
+    trainer = Trainer(data_train, data_valid, image_base_dir, instructions,
+                      models_folder_path=models_folder_path, data_folder_path=data_folder_path,
+                      checkpoint_file_path=checkpoint_file_path)
 
     epochs = instructions[STR.EPOCHS]
     for epoch in range(1, epochs + 1):
-        trainer.train(epoch)
-        trainer.validation(epoch)
+        trainer.train(epoch, log_path=log_file)
+        trainer.validation(epoch, log_path=log_file)

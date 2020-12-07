@@ -85,11 +85,12 @@ def calculate_split(mask_folder_path, colour_mapping, training_size=0.85):
     weights = 1 / counts.sum(axis=0) / counts.sum()
     distance_metric = calc_distance_metric(weights)
 
+    print(weights)
     # index where to split the data into training and validation set
     split_index = int(len(names) * training_size)
 
     # how many times should the procedure (random selection + swapping) be done
-    try_count = 10
+    try_count = 2
 
     # variables for the outer loop
     final_min_distance = 1e5
@@ -100,7 +101,7 @@ def calculate_split(mask_folder_path, colour_mapping, training_size=0.85):
         print("Nr. {} of {} tries".format(k + 1, try_count))
         # get initial split by doing some random splits and comparing them
         print("Calculating initial split by random selection")
-        permutation_count = int(8e4)
+        permutation_count = 3
 
         min_dist = 1e5
         best_permutation = []
@@ -183,7 +184,7 @@ if __name__ == "__main__":
     data_folder_path = (data_folder_path if data_folder_path else paths.DATA_FOLDER_PATH)
     mask_folder_path = os.path.join(data_folder_path, 'masks')
 
-    colour_mapping = mapping.get_colour_mapping()
+    colour_mapping = mapping.get_colour_mapping(data_folder_path)
 
     files_train, files_valid = calculate_split(mask_folder_path, colour_mapping)
 

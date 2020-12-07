@@ -36,11 +36,10 @@ def plot_data(image, gt_mask, colour_mapping, prediction_mask=None, out_file_pat
         "c_sponge_barrel": "Sponge - Barrel"
     }
 
-
     if gt_mask.ndim == 3:
         gt_mask = gt_mask[:, :, 0]
 
-    fig = plt.figure(figsize=(15, 10))
+    fig = plt.figure(figsize=(25, 20))
 
     overlays = [gt_mask, prediction_mask] if prediction_mask is not None else [gt_mask]
 
@@ -55,7 +54,7 @@ def plot_data(image, gt_mask, colour_mapping, prediction_mask=None, out_file_pat
     for i, overlay in enumerate(overlays):
         grid[i].imshow(image)
         grid[i].set_axis_off()
-        im = grid[i].imshow(overlay, cmap=cm.get_cmap("tab20", 14), alpha=0.8, vmin=0, vmax=255)
+        im = grid[i].imshow(overlay, cmap=cm.get_cmap("tab20", 14), alpha=0.5, vmin=0, vmax=255)
 
         colours = list(sorted(set(list(colours) + np.unique(overlays).tolist())))
         # plt.axis("off")
@@ -63,7 +62,7 @@ def plot_data(image, gt_mask, colour_mapping, prediction_mask=None, out_file_pat
     grid[-1].set_axis_off()
 
     # cbar = grid[0].cax.colorbar(ax)
-    cbar = grid.cbar_axes[0].colorbar(im)
+    #cbar = grid.cbar_axes[0].colorbar(im)
 
     # cbar.ax.set_yticks(np.arange(0, 1.1, 0.5))
     # cbar.ax.set_yticklabels(['low', 'medium', 'high'])
@@ -71,9 +70,9 @@ def plot_data(image, gt_mask, colour_mapping, prediction_mask=None, out_file_pat
 
     y_tick_labels = [class_name_converter[c] for c in colour_mapping.keys()]
     # cbar = fig.colorbar(fig, ticks=colour_ticks)
-    cbar.ax.set_yticks(colours)
+    #cbar.ax.set_yticks(colours)
 
-    cbar.ax.set_yticklabels(y_tick_labels)
+    #cbar.ax.set_yticklabels(y_tick_labels)
 
     if out_file_path:
         plt.savefig(out_file_path)

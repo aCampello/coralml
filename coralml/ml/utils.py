@@ -2,20 +2,27 @@ import warnings
 import os
 import shutil
 import json
+import sys
 
 import numpy as np
 import torch
-from coralml.constants import mapping
+import torch.nn as nn
+from coralml.constants import mapping, paths
+
+
+sys.path.extend([paths.DEEPLAB_FOLDER_PATH, os.path.join(paths.DEEPLAB_FOLDER_PATH, "utils")])
+
+from modeling.deeplab import DeepLab
 
 from tensorboardX import SummaryWriter
 
 
-def colour_mask_to_class_id_mask(colour_mask):
+def colour_mask_to_class_id_mask(colour_mask, data_folder_path=None):
     """
     :param colour_mask:
     :return:
     """
-    colour_mapping = mapping.get_colour_mapping()
+    colour_mapping = mapping.get_colour_mapping(data_folder_path)
     class_id_mask = np.zeros(colour_mask.shape[:2]).astype(np.uint8)
 
     for i, k in enumerate(sorted(colour_mapping.keys())):
@@ -50,6 +57,7 @@ def calculate_class_weights(class_stats_file_path, colour_mapping, modifier=1.01
 
 
 def load_state_dict(model, filepath):
+    print(filepath)
     pretrained_dict = torch.load(filepath, map_location=lambda storage, loc: storage)
     model_dict = model.state_dict()
 
@@ -215,3 +223,33 @@ class TensorboardSummary(object):
     def create_summary(self):
         writer = SummaryWriter(log_dir=os.path.join(self.directory))
         return writer
+
+
+def load_model(model_path, num_classes=14, backbone='resnet', output_stride=16):
+    print(f"Loading model from {model_path}")
+    model = DeepLab(num_classes=num_classes,
+                    backbone=backbone,
+                    output_stride=output_stride)
+
+    pretrained_dict = torch.load(model_path, map_location=lambda storage, loc: storage)
+    model_dict = model.state_dict()
+    # 1. filter out unnecessary keys and mismatching sizes
+    pretrained_dict = {k: v for k, v in pretrained_dict.items() if
+                       (k in model_dict) and (model_dict[k].shape == pretrained_dict[k].shape)}
+
+    # 2. overwrite entries in the existing state dict
+    model_dict.update(pretrained_dict)
+    # 3. load the new state dict
+    model.load_state_dict(model_dict)
+
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    if torch.cuda.device_count() > 1:
+        print("Load model in  ", torch.cuda.device_count(), " GPUs!")
+        model = nn.DataParallel(model)
+    model.to(device)
+    model.eval()
+
+
+    return model
+
+

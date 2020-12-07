@@ -1,0 +1,9 @@
+{
+  "epochs": 50,
+  "model_name": "model-3",
+  "nn_input_shape": 512,
+  "crops": 16,
+  "images_per_batch": 2,
+  "batch_size": 16,
+  "multi_gpu": true
+}

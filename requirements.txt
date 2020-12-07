@@ -13,3 +13,4 @@ imdirect
 torch
 torchvision
 mpi4py
+PyNVTX

@@ -1,4 +1,6 @@
-env/
-data/images/
-data/masks/
-data/images_full/
+models/*
+*egg-info
+env/*
+data/images/*
+data/masks/*
+data/images_full/*

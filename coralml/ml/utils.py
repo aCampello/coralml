@@ -57,6 +57,7 @@ def calculate_class_weights(class_stats_file_path, colour_mapping, modifier=1.01
 
 
 def load_state_dict(model, filepath):
+    print(filepath)
     pretrained_dict = torch.load(filepath, map_location=lambda storage, loc: storage)
     model_dict = model.state_dict()
 

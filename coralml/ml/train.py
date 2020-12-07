@@ -156,7 +156,7 @@ class Trainer:
         if checkpoint_file_path is not None:
             print("loading state_dict from:")
             print(checkpoint_file_path)
-            load_state_dict(self.model, state_dict_file_path)
+            load_state_dict(self.model, checkpoint_file_path)
 
         learning_rate = instructions.get(STR.LEARNING_RATE, 1e-5)
         train_params = [{'params': self.model.get_1x_lr_params(), 'lr': learning_rate},
@@ -311,7 +311,7 @@ def train(data_train, data_valid, image_base_dir, instructions, models_folder_pa
           log_file='log.txt', data_folder_path=None, checkpoint_file_path=None):
     trainer = Trainer(data_train, data_valid, image_base_dir, instructions,
                       models_folder_path=models_folder_path, data_folder_path=data_folder_path,
-                      checkpoint_file_path=None)
+                      checkpoint_file_path=checkpoint_file_path)
 
     epochs = instructions[STR.EPOCHS]
     for epoch in range(1, epochs + 1):

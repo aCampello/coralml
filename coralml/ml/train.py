@@ -32,8 +32,19 @@ from metrics import Evaluator
 
 
 
+#________________________________________________________________________________
+# Introduced for profiling on NVIDIA GPUs: exposes NVTX tagging functions
+
+import PyNVTX as nvtx
+
+#--------------------------------------------------------------------------------
+
+
+
+
 class Trainer:
 
+    @nvtx.mark("ml.train.Trainer.__init__")
     def __init__(self, data_train, data_valid, image_base_dir, instructions, models_folder_path=None,
                  data_folder_path=None, checkpoint_file_path=None):
         """
@@ -210,6 +221,7 @@ class Trainer:
 
         self.best_prediction = 0.0
 
+    @nvtx.mark("ml.train.Trainer.train")
     def train(self, epoch, log_path=None):
         self.model.train()
         train_loss = 0.0
@@ -253,6 +265,7 @@ class Trainer:
 
         print("Loss: {:.2f}".format(train_loss))
 
+    @nvtx.mark("ml.train.Trainer.validation")
     def validation(self, epoch, log_path=None):
 
         self.model.eval()
@@ -307,6 +320,7 @@ class Trainer:
         self.saver.save_checkpoint(self.model, is_best, epoch)
 
 
+@nvtx.mark("ml.train")
 def train(data_train, data_valid, image_base_dir, instructions, models_folder_path=None,
           log_file='log.txt', data_folder_path=None, checkpoint_file_path=None):
     trainer = Trainer(data_train, data_valid, image_base_dir, instructions,

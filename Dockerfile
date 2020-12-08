@@ -1,145 +1,57 @@
+#===============================================================================
+#
+# Copyright (c) 2020, NVIDIA CORPORATION. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# ==============================================================================
 
-FROM ubuntu:18.04
-LABEL maintainer="Johannes Blaschke <jpblaschke@lbl.gov>"
-# adapted from Rollin Thomas <rcthomas@lbl.gov>
-# and Kelly Rowland <kellyrowland@lbl.gov>
+ARG FROM_IMAGE_NAME=nvcr.io/nvidia/tensorflow:20.06-tf1-py3
+FROM ${FROM_IMAGE_NAME}
 
-# Base Ubuntu packages
+ENV DEBIAN_FRONTEND=noninteractive
 
-ENV DEBIAN_FRONTEND noninteractive
-ENV LANG C.UTF-8
+RUN rm -rf /workspace && mkdir -p /workspace
+ADD . /workspace
+WORKDIR /workspace
 
+RUN apt-get update && \
+    apt-get install -y vim libsm6 libxext6 libxrender-dev python3-tk cmake && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Make sure python and pip points to pip3 and python3
+RUN python -m pip install --upgrade pip && \
+    pip --no-cache-dir --no-cache install \
+        Cython \
+        matplotlib \
+        opencv-python-headless \
+        mpi4py \
+        Pillow \
+        pytest \
+        tf-slim \
+        pyyaml && \
+    git clone https://github.com/pybind/pybind11 /opt/pybind11 && \
+    cd /opt/pybind11 && cmake . && make install && pip install . && \
+    pip --no-cache-dir --no-cache install \
+        'git+https://github.com/NVIDIA/cocoapi#egg=pycocotools&subdirectory=PythonAPI' && \
+    pip --no-cache-dir --no-cache install \
+        'git+https://github.com/NVIDIA/dllogger'
+
+
+# Update protobuf 3 to 3.3.0
 RUN \
-    apt-get update          &&                                                 \
-    apt-get --yes upgrade   &&                                                 \
-    apt-get --yes install                                                      \
-        bzip2                                                                  \
-        curl                                                                   \
-        git                                                                    \
-        libffi-dev                                                             \
-        lsb-release                                                            \
-        tzdata                                                                 \
-        vim                                                                    \
-        wget                                                                   \
-        bash                                                                   \
-        autoconf                                                               \
-        automake                                                               \
-        gcc                                                                    \
-        g++                                                                    \
-        make                                                                   \
-        cmake                                                                  \
-        gfortran                                                               \
-        tar                                                                    \
-        unzip                                                                  \
-        strace                                                                 \
-        patchelf                                                               \
-        libgl1-mesa-dev                                                        \
-        libgtk2.0-0                                                            \
-        x11-xserver-utils                                                      \
-        mpich                                                                  \
-        python3                                                                \
-        python3-pip                                                            \
-        software-properties-common
-
-
-#-------------------------------------------------------------------------------
-# ADD CUDA to the image
-#
-
-RUN apt-get update
-RUN add-apt-repository ppa:graphics-drivers
-RUN apt-key adv --fetch-keys  http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub
-RUN bash -c 'echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64 /" > /etc/apt/sources.list.d/cuda.list'
-RUN bash -c 'echo "deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64 /" > /etc/apt/sources.list.d/cuda_learn.list'
-
-RUN \
-    apt-get update                                                          && \
-    apt-get --yes install                                                      \
-        cuda-10-1                                                              \
-        libcudnn7-dev                                                          \
-        libnccl-dev
-
-#-------------------------------------------------------------------------------
-
-
-# Timezone to Berkeley
-
-ENV TZ=America/Los_Angeles
-RUN \
-    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime  &&  \
-    echo $TZ > /etc/timezone
-
-
-#-------------------------------------------------------------------------------
-# The /opt/ scripts require source => switch `RUN` to execute bash (instead sh)
-SHELL ["/bin/bash", "-c"]
-
-#-------------------------------------------------------------------------------
-
-
-#-------------------------------------------------------------------------------
-# Copy the projects into the image
-#
-
-COPY coralml /img/coralml
-COPY data /img/data
-COPY requirements.txt /img/requirements.txt
-COPY setup.py /img/setup.py
-RUN mkdir -p /img/coralml/src
-COPY docker/pytorch-deeplab-xception /img/coralml/src/pytorch-deeplab-xception
-
-#-------------------------------------------------------------------------------
-
-
-#-------------------------------------------------------------------------------
-# Install DEPENDENCIES
-#
-
-RUN cd /img                                                                 && \
-    python3 -m pip install --upgrade pip                                    && \
-    python3 -m pip install -r requirements.txt
-
-#-------------------------------------------------------------------------------
-
-
-#-------------------------------------------------------------------------------
-# Install DETR dependencies
-#
-
-RUN git clone https://github.com/facebookresearch/detr.git
-
-RUN python3 -m pip install cython scipy
-RUN python3 -m pip install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
-RUN python3 -m pip install git+https://github.com/cocodataset/panopticapi.git
-RUN python3 -m pip install submitit
-
-#-------------------------------------------------------------------------------
-# LDCONFIG
-#
-# We recommend running an /sbin/ldconfig as part of the image build (e.g. in
-# the Dockerfile) to update the cache after installing any new libraries in in
-# the image build.
-#
-
-RUN /sbin/ldconfig
-
-#-------------------------------------------------------------------------------
-
-
-#-------------------------------------------------------------------------------
-# ENTRYPOINT
-#
-
-RUN mkdir -p /img
-ADD docker/entrypoint.sh /img
-
-RUN mkdir -p /img/tests
-COPY docker/tests/*.py /img/tests/
-
-WORKDIR /img
-
-RUN chmod +x entrypoint.sh
-
-ENTRYPOINT ["/img/entrypoint.sh"]
-
-#-------------------------------------------------------------------------------
+    curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v3.3.0/protoc-3.3.0-linux-x86_64.zip && \
+    unzip -u protoc-3.3.0-linux-x86_64.zip -d protoc3 && \
+    mv protoc3/bin/* /usr/local/bin/ && \
+    mv protoc3/include/* /usr/local/include/

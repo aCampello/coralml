@@ -58,7 +58,7 @@ virtualenv -p python3.7 env/
 ```
 
 ```bash
-pip install torch torchvision cudatoolkit==9.0 #For gpu
+pip install torch torchvision cudatoolkit #For gpu
 ```
 
 Install requirements and package

@@ -40,6 +40,7 @@ RUN python -m pip install --upgrade pip && \
         Pillow \
         pytest \
         tf-slim \
+        tensorpack \
         pyyaml && \
     git clone https://github.com/pybind/pybind11 /opt/pybind11 && \
     cd /opt/pybind11 && cmake . && make install && pip install . && \

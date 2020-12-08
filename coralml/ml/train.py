@@ -223,7 +223,9 @@ class Trainer:
 
     @nvtx.mark("ml.train.Trainer.train")
     def train(self, epoch, log_path=None):
+        nvtx.RangePushA("Trainer.model.train")
         self.model.train()
+        nvtx.RangePop()
         train_loss = 0.0
 
         # create a progress bar
@@ -233,18 +235,26 @@ class Trainer:
 
         # go through each item in the training data
         for i, sample in enumerate(pbar):
+            nvtx.RangePushA(f"it={i}")
+
             # set input and target
             nn_input = sample[STR.NN_INPUT].to(self.device)
             nn_target = sample[STR.NN_TARGET].to(self.device, dtype=torch.float)
 
             if self.scheduler:
+                nvtx.RangePushA("Trainer.scheduler")
                 self.scheduler(self.optimizer, i, epoch, self.best_prediction)
+                nvtx.RangePop()
 
             # run model
+            nvtx.RangePushA("Trainer.model")
             output = self.model(nn_input)
+            nvtx.RangePop()
 
             # calc losses
+            nvtx.RangePushA("Trainer.criterion")
             loss = self.criterion(output, nn_target)
+            nvtx.RangePop()
             # # save step losses
             # combined_loss_steps.append(float(loss))
             # regression_loss_steps.append(float(regression_loss))
@@ -255,10 +265,18 @@ class Trainer:
             self.writer.add_scalar('train/total_loss_iter', loss.item(), i + num_batches_train * epoch)
 
             # calculate gradient and update model weights
+            nvtx.RangePushA("loss[Trainer.criterion].backward")
             loss.backward()
+            nvtx.RangePop()
             # torch.nn.utils.clip_grad_norm_(model.parameters(), 0.1)
+            nvtx.RangePushA("Trainer.optimizer.step")
             self.optimizer.step()
+            nvtx.RangePop()
+            nvtx.RangePushA("Trainer.optimizer.zero_grad")
             self.optimizer.zero_grad()
+            nvtx.RangePop()
+
+            nvtx.RangePop()
 
         self.writer.add_scalar('train/total_loss_epoch', train_loss, epoch)
         print("[Epoch: {}, num images/crops: {}]".format(epoch, num_batches_train * self.batch_size))

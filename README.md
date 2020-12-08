@@ -123,3 +123,22 @@ python coralml/ml/evaluate_clef.py --data_folder_path data --image_folder images
 	pip install --upgrade pip
 	pip install -r requirements.txt
 ```
+
+# Building NVIDIA container
+From the coralml folder run the following commands to build the containers:
+#### Tensorflow
+```bash
+./scripts/docker/build_docker_tf.sh
+```
+Within container run
+```bash
+export PYTHONPATH=$PYTHONPATH:/home/noaa_imageclefcoral/CoralCLEF2020/object_detection/
+```
+
+#### Pytorch 
+```bash 
+./scripts/docker/build_docker_pytorch.sh
+```
+
+
+

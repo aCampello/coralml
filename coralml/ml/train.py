@@ -235,6 +235,7 @@ class Trainer:
 
         # go through each item in the training data
         for i, sample in enumerate(pbar):
+            # Profile each loop tieration
             nvtx.RangePushA(f"it={i}")
 
             # set input and target
@@ -276,6 +277,7 @@ class Trainer:
             self.optimizer.zero_grad()
             nvtx.RangePop()
 
+            # Profile each loop iteration
             nvtx.RangePop()
 
         self.writer.add_scalar('train/total_loss_epoch', train_loss, epoch)

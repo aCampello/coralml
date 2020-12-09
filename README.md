@@ -6,8 +6,8 @@ This is the repository for the ImageCLEF team at the [NOAA-NVIDIA](https://www.g
 
 |Model|Status|Evaluation CLEF DATA|Evaluation NOAA DATA|
 |---|---|---| --- |
-|[Deep Segmentation'19](http://www.dei.unipd.it/~ferro/CLEF-WN-Drafts/CLEF2019/paper_151.pdf)| ✅ Implemented| ✅ Test data: 18% IoU <br> ❓ Val data: Implemented (numbers TBC) | ❌ Not Implemented  |
-|Mask-RCNN | ✅ Implemented |  ❓ Implemented (numbers TBC) | ❌ Not Implemented |
+|[Deep Segmentation'19](http://www.dei.unipd.it/~ferro/CLEF-WN-Drafts/CLEF2019/paper_151.pdf)| ✅ Implemented| ✅ Test data <br> 🔧 Val data: Implemented (numbers TBC) | 🔧 In progress  |
+|Mask-RCNN | ✅ Implemented |  🔧 In progress | ❌ Not Implemented |
 |[UNET](https://github.com/NVIDIA/DeepLearningExamples/tree/master/TensorFlow2/Segmentation/UNet_Medical)| ❌ Not Implemented| ❌ Not Implemented | ❌ Not Implemented |
 |DETR| ❌ Not Implemented| ❌ Not Implemented | ❌ Not Implemented |
 

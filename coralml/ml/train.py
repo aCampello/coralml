@@ -133,6 +133,9 @@ class Trainer:
         # define batch sizes
         self.batch_size = instructions[STR.BATCH_SIZE]
 
+        # Decorate all pytorch data loader methods
+        nvtx.mark_all_methods(DataLoader)
+
         if apply_random_cropping:
             self.data_loader_train = DataLoader(dataset=dataset_train,
                                                 batch_size=instructions[STR.IMAGES_PER_BATCH],
@@ -157,6 +160,9 @@ class Trainer:
 
         self.num_classes = dataset_train.num_classes()
 
+        # Instrument DeepLab model
+        nvtx.mark_all_methods(DeepLab)
+
         # define model
         print("Building model")
         self.model = DeepLab(num_classes=self.num_classes,
@@ -177,11 +183,17 @@ class Trainer:
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         if instructions.get(STR.MULTI_GPU, False):
             if torch.cuda.device_count() > 1:
+                # Instrument PyTorch model
+                nvtx.mark_all_methods(nn.DataParallel)
+
                 print("Using ", torch.cuda.device_count(), " GPUs!")
                 self.model = nn.DataParallel(self.model)
 
         print(f"Using {self.device}")
         self.model.to(self.device)
+
+        # Instrument SGD optimizer
+        nvtx.mark_all_methods(torch.optim.SGD)
 
         # Define Optimizer
         self.optimizer = torch.optim.SGD(train_params,
@@ -199,6 +211,10 @@ class Trainer:
             class_weights = torch.from_numpy(class_weights.astype(np.float32))
         else:
             class_weights = None
+
+        # Instrument Segmation Loss function
+        nvtx.mark_all_methods(SegmentationLosses)
+
         self.criterion = SegmentationLosses(weight=class_weights, cuda=self.device.type != "cpu").build_loss()
 
         # Define Evaluator
@@ -207,6 +223,10 @@ class Trainer:
         # Define lr scheduler
         self.scheduler = None
         if instructions.get(STR.USE_LR_SCHEDULER, True):
+
+            # Instrument LR schedular
+            nvtx.mark_all_methods(LR_Scheduler)
+
             self.scheduler = LR_Scheduler(mode="cos",
                                           base_lr=learning_rate,
                                           num_epochs=instructions[STR.EPOCHS],
@@ -223,10 +243,13 @@ class Trainer:
 
     @nvtx.mark("ml.train.Trainer.train")
     def train(self, epoch, log_path=None):
-        nvtx.RangePushA("Trainer.model.train")
+        # nvtx.RangePushA("Trainer.model.train")
         self.model.train()
-        nvtx.RangePop()
+        # nvtx.RangePop()
         train_loss = 0.0
+
+        # Instrument tqdm
+        nvtx.mark_all_methods(tqdm)
 
         # create a progress bar
         pbar = tqdm(self.data_loader_train)
@@ -243,19 +266,19 @@ class Trainer:
             nn_target = sample[STR.NN_TARGET].to(self.device, dtype=torch.float)
 
             if self.scheduler:
-                nvtx.RangePushA("Trainer.scheduler")
+                # nvtx.RangePushA("Trainer.scheduler")
                 self.scheduler(self.optimizer, i, epoch, self.best_prediction)
-                nvtx.RangePop()
+                # nvtx.RangePop()
 
             # run model
-            nvtx.RangePushA("Trainer.model")
+            # nvtx.RangePushA("Trainer.model")
             output = self.model(nn_input)
-            nvtx.RangePop()
+            # nvtx.RangePop()
 
             # calc losses
-            nvtx.RangePushA("Trainer.criterion")
+            # nvtx.RangePushA("Trainer.criterion")
             loss = self.criterion(output, nn_target)
-            nvtx.RangePop()
+            # nvtx.RangePop()
             # # save step losses
             # combined_loss_steps.append(float(loss))
             # regression_loss_steps.append(float(regression_loss))
@@ -266,16 +289,16 @@ class Trainer:
             self.writer.add_scalar('train/total_loss_iter', loss.item(), i + num_batches_train * epoch)
 
             # calculate gradient and update model weights
-            nvtx.RangePushA("loss[Trainer.criterion].backward")
+            # nvtx.RangePushA("loss[Trainer.criterion].backward")
             loss.backward()
-            nvtx.RangePop()
+            # nvtx.RangePop()
             # torch.nn.utils.clip_grad_norm_(model.parameters(), 0.1)
-            nvtx.RangePushA("Trainer.optimizer.step")
+            # nvtx.RangePushA("Trainer.optimizer.step")
             self.optimizer.step()
-            nvtx.RangePop()
-            nvtx.RangePushA("Trainer.optimizer.zero_grad")
+            # nvtx.RangePop()
+            # nvtx.RangePushA("Trainer.optimizer.zero_grad")
             self.optimizer.zero_grad()
-            nvtx.RangePop()
+            # nvtx.RangePop()
 
             # Profile each loop iteration
             nvtx.RangePop()

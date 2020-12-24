@@ -118,8 +118,8 @@ def calculate_split(mask_folder_path, colour_mapping, training_size=0.85):
                 min_dist = distance
                 best_permutation = permutation
 
-        indices_train = best_permutation[:split_index].tolist()
-        indices_valid = best_permutation[split_index:].tolist()
+        indices_train = best_permutation[:split_index]# .tolist()
+        indices_valid = best_permutation[split_index:]# .tolist()
 
         print("Optimise split by swapping (optimal) indices")
         swap_count = 100

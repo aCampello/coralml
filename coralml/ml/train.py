@@ -37,6 +37,12 @@ from metrics import Evaluator
 
 import PyNVTX as nvtx
 
+nvtx.REGISTRY.add(torch.nn.modules.module.Module, "__setattr__")
+nvtx.REGISTRY.add(torch.nn.modules.module.Module, "__getattr__")
+nvtx.REGISTRY.add(torch.nn.modules.module.Module, "register_buffer")
+nvtx.REGISTRY.add(torch.nn.modules.module.Module, "register_parameter")
+
+
 #--------------------------------------------------------------------------------
 
 
@@ -44,7 +50,7 @@ import PyNVTX as nvtx
 
 class Trainer:
 
-    @nvtx.mark("ml.train.Trainer.__init__")
+    @nvtx.annotate("ml.train.Trainer.__init__")
     def __init__(self, data_train, data_valid, image_base_dir, instructions, models_folder_path=None,
                  data_folder_path=None, checkpoint_file_path=None):
         """
@@ -134,7 +140,7 @@ class Trainer:
         self.batch_size = instructions[STR.BATCH_SIZE]
 
         # Decorate all pytorch data loader methods
-        nvtx.mark_all_methods(DataLoader)
+        nvtx.annotate_all_methods(DataLoader)
 
         if apply_random_cropping:
             self.data_loader_train = DataLoader(dataset=dataset_train,
@@ -161,7 +167,7 @@ class Trainer:
         self.num_classes = dataset_train.num_classes()
 
         # Instrument DeepLab model
-        nvtx.mark_all_methods(DeepLab)
+        nvtx.annotate_all_methods(DeepLab)
 
         # define model
         print("Building model")
@@ -184,7 +190,7 @@ class Trainer:
         if instructions.get(STR.MULTI_GPU, False):
             if torch.cuda.device_count() > 1:
                 # Instrument PyTorch model
-                nvtx.mark_all_methods(nn.DataParallel)
+                nvtx.annotate_all_methods(nn.DataParallel)
 
                 print("Using ", torch.cuda.device_count(), " GPUs!")
                 self.model = nn.DataParallel(self.model)
@@ -193,7 +199,7 @@ class Trainer:
         self.model.to(self.device)
 
         # Instrument SGD optimizer
-        nvtx.mark_all_methods(torch.optim.SGD)
+        nvtx.annotate_all_methods(torch.optim.SGD)
 
         # Define Optimizer
         self.optimizer = torch.optim.SGD(train_params,
@@ -213,7 +219,7 @@ class Trainer:
             class_weights = None
 
         # Instrument Segmation Loss function
-        nvtx.mark_all_methods(SegmentationLosses)
+        nvtx.annotate_all_methods(SegmentationLosses)
 
         self.criterion = SegmentationLosses(weight=class_weights, cuda=self.device.type != "cpu").build_loss()
 
@@ -225,7 +231,7 @@ class Trainer:
         if instructions.get(STR.USE_LR_SCHEDULER, True):
 
             # Instrument LR schedular
-            nvtx.mark_all_methods(LR_Scheduler)
+            nvtx.annotate_all_methods(LR_Scheduler)
 
             self.scheduler = LR_Scheduler(mode="cos",
                                           base_lr=learning_rate,
@@ -241,7 +247,7 @@ class Trainer:
 
         self.best_prediction = 0.0
 
-    @nvtx.mark("ml.train.Trainer.train")
+    @nvtx.annotate("ml.train.Trainer.train")
     def train(self, epoch, log_path=None):
         # nvtx.RangePushA("Trainer.model.train")
         self.model.train()
@@ -249,17 +255,25 @@ class Trainer:
         train_loss = 0.0
 
         # Instrument tqdm
-        nvtx.mark_all_methods(tqdm)
+        nvtx.annotate_all_methods(tqdm)
 
         # create a progress bar
         pbar = tqdm(self.data_loader_train)
 
         num_batches_train = len(self.data_loader_train)
 
+        nvtx.RangePushA("iter")
+        dataset_iter =  iter(self.data_loader_train)
+        nvtx.RangePop()
         # go through each item in the training data
-        for i, sample in enumerate(pbar):
+        # for i, sample in enumerate(pbar):
+        for i in range(len(self.data_loader_train)):
             # Profile each loop tieration
             nvtx.RangePushA(f"it={i}")
+
+            nvtx.RangePushA("load data")
+            sample = next(dataset_iter)
+            nvtx.RangePop()
 
             # set input and target
             nn_input = sample[STR.NN_INPUT].to(self.device)
@@ -300,6 +314,13 @@ class Trainer:
             self.optimizer.zero_grad()
             # nvtx.RangePop()
 
+            nvtx.RangePushA("Free local memory")
+            del sample
+            del output
+            del loss
+            nvtx.RangePop()
+
+
             # Profile each loop iteration
             nvtx.RangePop()
 
@@ -308,7 +329,7 @@ class Trainer:
 
         print("Loss: {:.2f}".format(train_loss))
 
-    @nvtx.mark("ml.train.Trainer.validation")
+    @nvtx.annotate("ml.train.Trainer.validation")
     def validation(self, epoch, log_path=None):
 
         self.model.eval()
@@ -363,7 +384,7 @@ class Trainer:
         self.saver.save_checkpoint(self.model, is_best, epoch)
 
 
-@nvtx.mark("ml.train")
+@nvtx.annotate("ml.train")
 def train(data_train, data_valid, image_base_dir, instructions, models_folder_path=None,
           log_file='log.txt', data_folder_path=None, checkpoint_file_path=None):
     trainer = Trainer(data_train, data_valid, image_base_dir, instructions,
